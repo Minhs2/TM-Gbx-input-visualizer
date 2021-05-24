@@ -27,7 +27,14 @@ def digitalVideo(inputTxt):
     for line in rawData:
         last5 = line[-6:]
         dashSplit = line.split('-')
-        spaceSplit = dashSplit[1].split()
+
+        if(len(dashSplit) == 1):
+            dashSplit = line.split()
+            spaceSplit = dashSplit
+            
+        else:
+             spaceSplit = dashSplit[1].split()
+
         if int(spaceSplit[0])/10 > maxVal:
             maxVal = int(spaceSplit[0])/10
 
