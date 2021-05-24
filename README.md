@@ -20,7 +20,10 @@ TrackMania Turbo
 
 ## To do
 
+### Known bugs
 - Fix issue where the program doesn't close fully when exiting
+
+### Other
 
 - Add a progress bar or other progress indicator
 
