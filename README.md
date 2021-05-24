@@ -2,6 +2,16 @@
 
 Input extraction done via [gbxtools](https://github.com/donadigo/gbxtools) and [pygbx](https://github.com/donadigo/pygbx) by [donadigo](https://github.com/donadigo)
 
+## Usage
+
+Select a supported .Replay.Gbx file and process!
+
+Default settings will generate:
+
+- .txt file of inputs inside the "Raw Inputs" folder
+
+- .mp4 visualization video inside the "Inputs Video"
+
 ## Supported Games
 
 TrackMania Nations Forever
