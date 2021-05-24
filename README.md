@@ -35,6 +35,8 @@ TrackMania Turbo
 
 ### Other
 
+- Customize visualization colors/shapes/BG color
+
 - Add a progress bar or other progress indicator
 
 - Overlay input viewer video with onto a rendered replay video automatically
@@ -48,8 +50,6 @@ TrackMania Turbo
 - Display replay statistics/graphs
 
 - Change program's icon while running
-
-- Customize visualization colors/shapes
 
 - Facelift the user interface
 
