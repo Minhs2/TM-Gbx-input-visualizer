@@ -1,8 +1,11 @@
 import os
-import shutil 
+import shutil
+import sys
 from tkinter import *
-from tkinter import ttk
 from tkinter import filedialog as fd
+from generate_input_file import generateTxt
+from analog_input_vis import analogVideo
+from kb_input_vis import digitalVideo
 
 window = Tk()
 
@@ -13,20 +16,22 @@ gbxFileName = "No .Gbx file specified"
 
 def run():
     # Run generate_input_file pipe into directory path, 
-    os.system('python3 generate_input_file.py ' + '"'  + gbxFileName + '" > "' + os.path.splitext(os.path.basename(gbxFileName))[0]  + '.txt"')
+    baseFileName = os.path.splitext(os.path.basename(gbxFileName))[0]
+    os.makedirs("Raw Inputs", exist_ok=True)
 
-    # Move result into "Raw Inputs" folder, make it if necessary
-    os.makedirs("Raw Inputs/", exist_ok=True)
-    shutil.move(os.path.splitext(os.path.basename(gbxFileName))[0] + '.txt', "Raw Inputs/" + os.path.splitext(os.path.basename(gbxFileName))[0] + ".txt")
+    sys.stdout = open(os.path.join('Raw Inputs', baseFileName + '.txt'), "w")
+    generateTxt(gbxFileName)
+    sys.stdout.close()
 
     if txtOnlyBool.get() == 0:
         
 
         if digitalBool.get() == 0:
-            os.system('python3 analog_input_vis.py ' +  '"Raw Inputs/' + os.path.splitext(os.path.basename(gbxFileName))[0] + '.txt"')
+            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'))
 
         else:
-            os.system('python3 kb_input_vis.py ' + '"Raw Inputs/' + os.path.splitext(os.path.basename(gbxFileName))[0] + '.txt"')
+            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'))
+
 
     #statusVar.set("Processing Finished!")
 

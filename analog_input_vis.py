@@ -2,14 +2,8 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.animation as animation
-import sys
 
-def main():
-    if len(sys.argv) < 2:
-        print('No provided file!')
-        quit()
-
-    inputTxt = sys.argv[1]
+def analogVideo(inputTxt):
 
     global accel
     global brake
@@ -114,7 +108,12 @@ def main():
             return[[867, 944], [867, 663], [xValue,yBottom], [xValue,yTop]]
             
     targetSteer = 0
-    steer = patches.Polygon(calcPartTriangle(steerDat[targetSteer][1]), closed=True, facecolor='#ffac30')
+    
+    # Check if the player starts by steering 
+    if steerDat[targetSteer][0] == 0:
+        steer = patches.Polygon(calcPartTriangle(steerDat[targetSteer][1]), closed=True, facecolor='#ffac30')
+    else:
+        steer = patches.Polygon([[0,0]], closed=True, facecolor='#ffac30')
     ax.add_patch(steer)
 
     def animate(i):
@@ -130,7 +129,7 @@ def main():
         brake.set_visible(False)
 
         # Print progress
-        print(((i+1)/maxVal)*100)
+        # print(((i+1)/maxVal)*100)
 
 
 
@@ -154,12 +153,8 @@ def main():
     # Export file to video, set dpi to 600 for 1080p
     anim = animation.FuncAnimation(vidCanvas, animate, blit=True, interval=10, save_count=maxVal)
     plt.axis('off')
-    os.makedirs("Inputs Video/", exist_ok=True)
+    os.makedirs("Inputs Video", exist_ok=True)
 
     vidWriter = animation.FFMpegWriter(fps=100)
 
-    anim.save('Inputs Video/' + os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4", writer = vidWriter, dpi = 600)
-
-
-if __name__ == '__main__':
-    main()
+    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = 600)

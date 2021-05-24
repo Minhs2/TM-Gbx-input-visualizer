@@ -2,14 +2,8 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.animation as animation
-import sys
 
-def main():
-    if len(sys.argv) < 2:
-        print('No provided file!')
-        quit()
-
-    inputTxt = sys.argv[1]
+def digitalVideo(inputTxt):
 
     global accel
     global brake
@@ -108,7 +102,7 @@ def main():
         right.set_visible(False)
 
         # Print progress
-        print(((i+1)/maxVal)*100)
+        # print(((i+1)/maxVal)*100)
 
         for pair in accelDat:
             if pair[0] <= i <= pair[1]:
@@ -134,7 +128,4 @@ def main():
     os.makedirs("Inputs Video/", exist_ok=True)
 
     vidWriter = animation.FFMpegWriter(fps=100)
-    anim.save('Inputs Video/' + os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4", writer = vidWriter, dpi = 600)
-
-if __name__ == '__main__':
-    main()
+    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = 600)

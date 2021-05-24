@@ -192,12 +192,7 @@ def process_path(path, write_func):
     
     print_inputs(ghost, write_func)
 
-def main():
-    if len(sys.argv) < 2:
-        print('No provided file!')
-        quit()
-
-    path = sys.argv[1]
+def generateTxt(path):
     if os.path.isdir(path):
         for root, _, files in os.walk(path):
             for filename in files:
@@ -208,7 +203,3 @@ def main():
                         process_path(os.path.join(root, filename), f.write)
     else:
         process_path(path, sys.stdout.write)
-
-
-if __name__ == '__main__':
-    main()
