@@ -20,6 +20,8 @@ TrackMania Turbo
 
 ## To do
 
+- Fix issue where the program doesn't close fully when exiting
+
 - Add a progress bar or other progress indicator
 
 - Overlay input viewer video with onto a rendered replay video automatically
