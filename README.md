@@ -54,5 +54,5 @@ TrackMania Turbo
 - Facelift the user interface
 
 ## Preview
-### User interface (v0.1
+### User interface (v0.1)
 ![image](https://user-images.githubusercontent.com/32379779/119336898-0e14b180-bc43-11eb-906c-dc9df33e6dc8.png)
