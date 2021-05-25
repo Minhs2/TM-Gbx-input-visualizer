@@ -43,6 +43,8 @@ TrackMania Turbo
 
 - Bug visualizing analog inputs at the end of file
 
+- Analog input viewer is shifted to the left about 23 pixels
+
 - Fix issue where the program doesn't close fully when exiting
 
 ### Other
