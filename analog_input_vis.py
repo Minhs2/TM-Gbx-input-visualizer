@@ -4,7 +4,6 @@ import matplotlib.patches as patches
 import matplotlib.animation as animation
 
 def analogVideo(inputTxt, color_hex):
-
     global accel
     global brake
     global steer
@@ -124,7 +123,8 @@ def analogVideo(inputTxt, color_hex):
     ax.add_patch(steer)
 
     def animate(i):
-
+        '''global progressBar
+        from UI_input_generator import progressBar'''
         # On every frame: remove all patches from plot, then readd the ones that need to be shown
 
         global accel
@@ -132,12 +132,12 @@ def analogVideo(inputTxt, color_hex):
         global steer
         global targetSteer
         
+        
         accel.set_visible(False)
         brake.set_visible(False)
 
-        # Print progress
-        # print(((i+1)/maxVal)*100)
-
+        # Update progress
+        # progressBar["value"] = ((i+1)/maxVal)*100
 
 
         if steerDat[targetSteer + 1][0] <= i:
@@ -158,6 +158,7 @@ def analogVideo(inputTxt, color_hex):
         return ax.patches
 
     # Export file to video, set dpi to 600 for 1080p
+    plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg/ffmpeg.exe'
     anim = animation.FuncAnimation(vidCanvas, animate, blit=True, interval=10, save_count=maxVal)
     plt.axis('off')
     os.makedirs("Inputs Video", exist_ok=True)

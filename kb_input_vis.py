@@ -130,6 +130,7 @@ def digitalVideo(inputTxt, color_hex):
         return ax.patches
 
     # Export file to video, set dpi to 600
+    plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg/ffmpeg.exe'
     anim = animation.FuncAnimation(vidCanvas, animate, blit=True, interval=10, save_count=maxVal)
     plt.axis('off')
     os.makedirs("Inputs Video/", exist_ok=True)
