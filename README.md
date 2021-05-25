@@ -2,6 +2,14 @@
 
 Input extraction done via [gbxtools](https://github.com/donadigo/gbxtools) and [pygbx](https://github.com/donadigo/pygbx) by [donadigo](https://github.com/donadigo)
 
+
+## Preview
+### User interface (v0.3)
+![image](https://user-images.githubusercontent.com/32379779/119478450-ad4dad80-bd04-11eb-916a-7d2268a2cc90.png)
+
+### Example output (v0.3) - YouTube Video
+[![Video preview](http://img.youtube.com/vi/mG7xsEQ2H98/0.jpg)](http://www.youtube.com/watch?v=mG7xsEQ2H98 "(Controller inputs) Turbo #128 - 58.330 by riolu")
+
 ## Usage
 
 Select a supported .Replay.Gbx file and process!
@@ -11,6 +19,7 @@ Default settings will generate:
 - .txt file of inputs inside the "Raw Inputs" folder
 
 - .mp4 visualization video inside the "Inputs Video"
+
 
 ## Supported Games
 
@@ -54,6 +63,3 @@ TrackMania Turbo
 
 - Facelift the user interface
 
-## Preview
-### User interface (v0.1)
-![image](https://user-images.githubusercontent.com/32379779/119336898-0e14b180-bc43-11eb-906c-dc9df33e6dc8.png)
