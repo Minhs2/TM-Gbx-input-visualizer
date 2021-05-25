@@ -77,10 +77,10 @@ def analogVideo(inputTxt, color_hex):
     vidCanvas.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
 
     # Transparent gray background shapes
-    accelBG = patches.Rectangle((874, 807), 127, 137, facecolor='#e2e2e2', alpha = 0.588)
-    brakeBG = patches.Rectangle((874, 663), 127, 137, facecolor='#e2e2e2', alpha = 0.588)
-    leftBG = patches.Polygon([[867, 944], [867, 663], [657, 804]], closed=True, facecolor='#e2e2e2', alpha = 0.588)
-    rightBG = patches.Polygon([[1008, 944], [1008, 663], [1218, 804]], closed=True, facecolor='#e2e2e2', alpha = 0.588)
+    accelBG = patches.Rectangle((897, 807), 127, 137, facecolor='#e2e2e2', alpha = 0.588)
+    brakeBG = patches.Rectangle((897, 663), 127, 137, facecolor='#e2e2e2', alpha = 0.588)
+    leftBG = patches.Polygon([[890, 944], [890, 663], [680, 804]], closed=True, facecolor='#e2e2e2', alpha = 0.588)
+    rightBG = patches.Polygon([[1031, 944], [1031, 663], [1241, 804]], closed=True, facecolor='#e2e2e2', alpha = 0.588)
 
     ax.add_patch(accelBG)
     ax.add_patch(brakeBG)
@@ -88,8 +88,8 @@ def analogVideo(inputTxt, color_hex):
     ax.add_patch(rightBG)
 
     # Active rectangles
-    accel = patches.Rectangle((874, 807), 127, 137, facecolor='#00ff00')
-    brake = patches.Rectangle((874, 663), 127, 137, facecolor='#ff0000')
+    accel = patches.Rectangle((897, 807), 127, 137, facecolor='#00ff00')
+    brake = patches.Rectangle((897, 663), 127, 137, facecolor='#ff0000')
 
     ax.add_patch(accel)
     ax.add_patch(brake)
@@ -104,15 +104,15 @@ def analogVideo(inputTxt, color_hex):
         if steerVal == 0:
             return [[0,0]]
         elif steerVal > 0:
-            xValue = 1008 + (210 * (steerVal/65536))
+            xValue = 1031 + (210 * (steerVal/65536))
             yTop = 944 - (140 * (steerVal/65536))
             yBottom = 663 + (141 * (steerVal/65536))
-            return[[1008, 944], [1008, 663], [xValue,yBottom], [xValue,yTop]]
+            return[[1031, 944], [1031, 663], [xValue,yBottom], [xValue,yTop]]
         else:
-            xValue = 867 - (210 * (steerVal/-65536))
+            xValue = 890 - (210 * (steerVal/-65536))
             yTop = 944 - (140 * (steerVal/-65536))
             yBottom = 663 + (141 * (steerVal/-65536))
-            return[[867, 944], [867, 663], [xValue,yBottom], [xValue,yTop]]
+            return[[890, 944], [890, 663], [xValue,yBottom], [xValue,yTop]]
             
     targetSteer = 0
     

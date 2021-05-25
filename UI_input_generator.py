@@ -37,7 +37,10 @@ def run():
 def gbxAsk():
     global gbxFileName
     gbxFileName = fd.askopenfilename(title='Select a .Gbx replay file (case sensitive):',filetypes=[("Gbx files", "*.Gbx")])
-    gbxVar.set(os.path.basename(gbxFileName))
+    if gbxFileName == "":
+        gbxFileName = "No .Gbx file specified"
+    else:
+        gbxVar.set(os.path.basename(gbxFileName))
 
 def replayAsk():
     global replayFileName
@@ -55,8 +58,14 @@ def bg_color():
     
     colorDisplayCanv.itemconfig(colorDisplay, fill=color_hex)
 
+def processEnder():
+    window.quit()
+    window.destroy()
+    sys.exit()
+
 
 window = Tk()
+window.protocol("WM_DELETE_WINDOW", processEnder)
 
 window.title("TrackMania Replay Input Viewer")
 window.geometry('700x400')
@@ -116,12 +125,8 @@ progressBar.grid(column=0, row=6, sticky=W, padx = 5, pady =(10,0) )
 progressBar["maximum"] = 100
 progressBar["value"] = 0'''
 
-def destroyer():
-    window.quit()
-    window.destroy()
-    sys.exit()
 
 if __name__ == '__main__':
 
     threading.Thread(window.mainloop())
-    window.protocol("WM_DELETE_WINDOW", destroyer)
+    
