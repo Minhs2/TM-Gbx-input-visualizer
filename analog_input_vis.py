@@ -2,6 +2,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.animation as animation
+import sys
 
 def analogVideo(inputTxt, color_hex):
     global accel
@@ -41,12 +42,12 @@ def analogVideo(inputTxt, color_hex):
 
             if(len(dashSplit) == 1):
                 dashSplit = line.split()
-                spaceSplit = dashSplit
+                spaceSplit = [7200000]
             
             else:
                 spaceSplit = dashSplit[1].split()
 
-            if int(spaceSplit[0])/10 > maxVal:
+            if int(spaceSplit[0])/10 > maxVal and spaceSplit[0] != 7200000:
                 maxVal = int(spaceSplit[0])/10
 
             if  last5 == "ss up\n":
