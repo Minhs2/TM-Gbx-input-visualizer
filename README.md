@@ -41,6 +41,8 @@ TrackMania Turbo
 
 ### Known bugs
 
+- Bug visualizing analog inputs at the end of file
+
 - Fix issue where the program doesn't close fully when exiting
 
 ### Other
