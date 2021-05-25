@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.animation as animation
 
-def digitalVideo(inputTxt):
+def digitalVideo(inputTxt, color_hex):
 
     global accel
     global brake
@@ -55,8 +55,8 @@ def digitalVideo(inputTxt):
     # Define Matplotlib figure and axes
     vidCanvas, ax = plt.subplots()
 
-    # Set background (chroma key) color to pink
-    vidCanvas.set_facecolor('#000000')
+    # Set background (chroma key) color to color_hex
+    vidCanvas.set_facecolor(color_hex)
 
     # Set canvas to 1080p aspect ratio @ 600 dpi export
     vidCanvas.set_size_inches((3.2, 1.8))
