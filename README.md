@@ -31,6 +31,9 @@ TrackMania Turbo
 ## To do
 
 ### Known bugs
+
+- Bundle ffmpeg with the executable
+
 - Fix issue where the program doesn't close fully when exiting
 
 ### Other
