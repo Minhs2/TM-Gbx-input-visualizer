@@ -23,15 +23,17 @@ def run():
 
     if txtOnlyBool.get() == 0:
 
+        resDpi = int(dpi_dict[resolutionVar.get()])
+
         if digitalBool.get() == 0:
-            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex)
+            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi)
 
         else:
-            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex)
+            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi)
 
 
         if videoMergeBool.get() == 0:
-            inputReplayMerge(os.path.join('Inputs Video', baseFileName + '.mp4'), replayFileName)
+            inputReplayMerge(os.path.join('Inputs Video', baseFileName + '.mp4'), replayFileName, audioBool.get())
 
 
 def gbxAsk():
@@ -68,7 +70,7 @@ window = Tk()
 window.protocol("WM_DELETE_WINDOW", processEnder)
 
 window.title("TrackMania Replay Input Viewer")
-window.geometry('700x400')
+window.geometry('700x450')
 
 gbxFileName = "No .Gbx file specified"
 
@@ -107,17 +109,53 @@ txtOnlyBool = IntVar()
 Checkbutton(window, text="Generate inputs .txt file only (no video)", onvalue=1, offvalue=0, variable = txtOnlyBool).grid(column=0, row=6,pady= (10,0),sticky=W)
 
 videoMergeBool = IntVar()
-Checkbutton(window, text="Merge input visualization onto video file (background must be black)", onvalue=0, offvalue=1, variable = videoMergeBool).grid(column=0, row=7,pady= (5,0),sticky=W)
+Checkbutton(window, text="Merge input visualization onto video file (background must be black)", onvalue=0, offvalue=1, variable = videoMergeBool).grid(column=0, row=7,sticky=W)
+
+
+audioBool = IntVar()
+Checkbutton(window, text="Input video has audio", onvalue=1, offvalue=0, variable = audioBool).grid(column=0, row=8,sticky=W)
 
 bGColorBtn = Button(window, text = "Select video background color", command = bg_color)
-bGColorBtn.grid(column=0, row=8, padx = 10, sticky=E+W)
+bGColorBtn.grid(column=0, row=9, padx = 10, sticky=E+W)
 
 colorDisplayCanv = Canvas(window, width = 26, height = 26)
-colorDisplayCanv.grid(column=1, row=8, pady=10,sticky=W)
+colorDisplayCanv.grid(column=1, row=9, pady=5,sticky=W)
 colorDisplay = colorDisplayCanv.create_rectangle(0, 0, 26, 26, fill=color_hex)
 
+vidResolutionVar = StringVar()
+vidResolutionVar.set("Video resolution:")
+vidResolutionLabel = Label(window, textvariable=vidResolutionVar)
+vidResolutionLabel.grid(column=0, row=10,padx = 7, pady= (5,0), sticky=W)
+
+resolutions = [
+"360p",
+"480p",
+"720p",
+"1080p",
+"1440p",
+"2160p (4k)",
+"4320p (8k)"
+]
+
+dpi_dict = {
+"360p":"200",
+"480p":"267",
+"720p":"400",
+"1080p":"600",
+"1440p":"800",
+"2160p (4k)":"1200",
+"4320p (8k)":"2400"
+}
+
+resolutionVar = StringVar(window)
+resolutionVar.set(resolutions[3])
+
+resolutionSelector = OptionMenu(window, resolutionVar, *resolutions)
+resolutionSelector.grid(column=0, row=11, sticky=W, padx = 10, pady =5 )
+
 executeBtn = Button(window, text="Process replay (may take a while for video(s))", bg="white", fg="black", command=run, activebackground='#00ff00')
-executeBtn.grid(column=0, row=9, sticky=E+W, padx = 10, pady =(10,0) )
+executeBtn.grid(column=0, row=12, sticky=E+W, padx = 10, pady =5 )
+
 
 # WiP progressBar code that doesn't work because GUI is unthreaded
 '''progressBar = ttk.Progressbar(window ,orient ="horizontal",length = 250, mode ="determinate")

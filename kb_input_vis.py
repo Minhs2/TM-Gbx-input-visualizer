@@ -4,7 +4,7 @@ import matplotlib.patches as patches
 import matplotlib.animation as animation
 import numpy as np
 
-def digitalVideo(inputTxt, color_hex):
+def digitalVideo(inputTxt, color_hex, resDpi):
 
     global accel
     global brake
@@ -137,4 +137,4 @@ def digitalVideo(inputTxt, color_hex):
     os.makedirs("Inputs Video/", exist_ok=True)
 
     vidWriter = animation.FFMpegWriter(fps=100)
-    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = 600)
+    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = resDpi)
