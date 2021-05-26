@@ -4,11 +4,12 @@ Input extraction done via [gbxtools](https://github.com/donadigo/gbxtools) and [
 
 
 ## Preview
-### User interface (v0.3)
-![image](https://user-images.githubusercontent.com/32379779/119478450-ad4dad80-bd04-11eb-916a-7d2268a2cc90.png)
+### User interface (v0.3.2)
+![image](https://user-images.githubusercontent.com/32379779/119745661-6e724180-be43-11eb-8223-673cf8060011.png)
 
-### Example output (v0.3) - YouTube Video
-[![Video preview](http://img.youtube.com/vi/mG7xsEQ2H98/0.jpg)](http://www.youtube.com/watch?v=mG7xsEQ2H98 "(Controller inputs) Turbo #128 - 58.330 by riolu")
+
+### Example output (v0.3.2) - YouTube Video
+[![Video preview](http://img.youtube.com/vi/o6gHC0RtKFc/0.jpg)](http://www.youtube.com/watch?v=o6gHC0RtKFc "(Replay Inputs) TrackMania Turbo #056 riolu 00'30''34 Replay")
 
 ## Usage
 
