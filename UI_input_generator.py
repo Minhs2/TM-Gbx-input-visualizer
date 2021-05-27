@@ -33,7 +33,7 @@ def run():
 
 
         if videoMergeBool.get() == 0:
-            inputReplayMerge(os.path.join('Inputs Video', baseFileName + '.mp4'), replayFileName, audioBool.get())
+            inputReplayMerge(os.path.join('Inputs Video', baseFileName + '.mp4'), replayFileName, audioBool.get(), starTrimVar.get())
 
 
 def gbxAsk():
@@ -96,36 +96,46 @@ replayVideoDisplay.grid(column=0, row=1,padx = 7, pady= (20,0))
 replayVideoBtn = Button(window, text="Open video file", bg="white", fg="black", command=replayAsk)
 replayVideoBtn.grid(column=1, row=1, padx=10, pady= (20,0))
 
+starTrimLabelVar = StringVar()
+starTrimLabelVar.set("Start trim (seconds):")
+starTrimLabel = Label(window, textvariable=starTrimLabelVar)
+starTrimLabel.grid(column=0, row=3,padx = 7, pady= (10,0), sticky=W)
+
+starTrimVar = StringVar()
+starTrimVar.set("0.00")
+startTrimEntry = Entry(window, textvariable = starTrimVar)
+startTrimEntry.grid(column=0, row=3,padx = 120, pady= (10,0), sticky=W)
+
 inputTypeLabelVar = StringVar()
 inputTypeLabelVar.set("Select input type:")
 inputTypeLabel = Label(window, textvariable=inputTypeLabelVar)
-inputTypeLabel.grid(column=0, row=3,padx = 7, pady= (20,0), sticky=W)
+inputTypeLabel.grid(column=0, row=4,padx = 7, pady= (20,0), sticky=W)
 
 digitalBool = IntVar()
-Radiobutton(window, text="Controller, Wheel, or Joystick", variable = digitalBool,value = 0 ).grid(column=0, row=4,sticky=W)
-Radiobutton(window, text="Keyboard", variable = digitalBool, value = 1).grid(column=0, row=5,sticky=W)
+Radiobutton(window, text="Controller, Wheel, or Joystick", variable = digitalBool,value = 0 ).grid(column=0, row=5,sticky=W)
+Radiobutton(window, text="Keyboard", variable = digitalBool, value = 1).grid(column=0, row=6,sticky=W)
 
 txtOnlyBool = IntVar()
-Checkbutton(window, text="Generate inputs .txt file only (no video)", onvalue=1, offvalue=0, variable = txtOnlyBool).grid(column=0, row=6,pady= (10,0),sticky=W)
+Checkbutton(window, text="Generate inputs .txt file only (no video)", onvalue=1, offvalue=0, variable = txtOnlyBool).grid(column=0, row=7,pady= (10,0),sticky=W)
 
 videoMergeBool = IntVar()
-Checkbutton(window, text="Merge input visualization onto video file (background must be black)", onvalue=0, offvalue=1, variable = videoMergeBool).grid(column=0, row=7,sticky=W)
+Checkbutton(window, text="Merge input visualization onto video file (background must be black)", onvalue=0, offvalue=1, variable = videoMergeBool).grid(column=0, row=8,sticky=W)
 
 
 audioBool = IntVar()
-Checkbutton(window, text="Input video has audio", onvalue=1, offvalue=0, variable = audioBool).grid(column=0, row=8,sticky=W)
+Checkbutton(window, text="Input video has audio", onvalue=1, offvalue=0, variable = audioBool).grid(column=0, row=9,sticky=W)
 
 bGColorBtn = Button(window, text = "Select video background color", command = bg_color)
-bGColorBtn.grid(column=0, row=9, padx = 10, sticky=E+W)
+bGColorBtn.grid(column=0, row=10, padx = 10, sticky=E+W)
 
 colorDisplayCanv = Canvas(window, width = 26, height = 26)
-colorDisplayCanv.grid(column=1, row=9, pady=5,sticky=W)
+colorDisplayCanv.grid(column=1, row=10, pady=5,sticky=W)
 colorDisplay = colorDisplayCanv.create_rectangle(0, 0, 26, 26, fill=color_hex)
 
 vidResolutionVar = StringVar()
 vidResolutionVar.set("Video resolution:")
 vidResolutionLabel = Label(window, textvariable=vidResolutionVar)
-vidResolutionLabel.grid(column=0, row=10,padx = 7, pady= (5,0), sticky=W)
+vidResolutionLabel.grid(column=0, row=11,padx = 7, pady= (5,0), sticky=W)
 
 resolutions = [
 "360p",
@@ -151,10 +161,10 @@ resolutionVar = StringVar(window)
 resolutionVar.set(resolutions[3])
 
 resolutionSelector = OptionMenu(window, resolutionVar, *resolutions)
-resolutionSelector.grid(column=0, row=11, sticky=W, padx = 10, pady =5 )
+resolutionSelector.grid(column=0, row=12, sticky=W, padx = 10, pady =5 )
 
 executeBtn = Button(window, text="Process replay (may take a while for video(s))", bg="white", fg="black", command=run, activebackground='#00ff00')
-executeBtn.grid(column=0, row=12, sticky=E+W, padx = 10, pady =5 )
+executeBtn.grid(column=0, row=13, sticky=E+W, padx = 10, pady =5 )
 
 
 # WiP progressBar code that doesn't work because GUI is unthreaded
