@@ -102,7 +102,7 @@ starTrimLabel = Label(window, textvariable=starTrimLabelVar)
 starTrimLabel.grid(column=0, row=3,padx = 7, pady= (10,0), sticky=W)
 
 starTrimVar = StringVar()
-starTrimVar.set("0.00")
+starTrimVar.set("0.000")
 startTrimEntry = Entry(window, textvariable = starTrimVar)
 startTrimEntry.grid(column=0, row=3,padx = 120, pady= (10,0), sticky=W)
 
@@ -161,7 +161,7 @@ resolutionVar = StringVar(window)
 resolutionVar.set(resolutions[3])
 
 resolutionSelector = OptionMenu(window, resolutionVar, *resolutions)
-resolutionSelector.grid(column=0, row=12, sticky=W, padx = 10, pady =5 )
+resolutionSelector.grid(column=0, row=12, sticky=W, padx = 10, pady =(0,5) )
 
 executeBtn = Button(window, text="Process replay (may take a while for video(s))", bg="white", fg="black", command=run, activebackground='#00ff00')
 executeBtn.grid(column=0, row=13, sticky=E+W, padx = 10, pady =5 )
