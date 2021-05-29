@@ -160,10 +160,11 @@ def analogVideo(inputTxt, color_hex, resDpi):
 
     # Export file to video, set dpi to 600 for 1080p
     plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg/ffmpeg.exe'
+
     anim = animation.FuncAnimation(vidCanvas, animate, blit=True, interval=10, save_count=maxVal)
     plt.axis('off')
     os.makedirs("Inputs Video", exist_ok=True)
 
-    vidWriter = animation.FFMpegWriter(fps=100)
+    vidWriter = animation.FFMpegWriter(fps=100, bitrate = 100000)
 
     anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = resDpi)

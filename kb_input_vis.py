@@ -136,5 +136,5 @@ def digitalVideo(inputTxt, color_hex, resDpi):
     plt.axis('off')
     os.makedirs("Inputs Video/", exist_ok=True)
 
-    vidWriter = animation.FFMpegWriter(fps=100)
+    vidWriter = animation.FFMpegWriter(fps=100, bitrate = 100000)
     anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = resDpi)
