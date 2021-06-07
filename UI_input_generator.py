@@ -70,7 +70,7 @@ window = Tk()
 window.protocol("WM_DELETE_WINDOW", processEnder)
 
 window.title("TrackMania Replay Input Viewer")
-window.geometry('800x450')
+window.geometry('700x450')
 
 gbxFileName = "No .Gbx file specified"
 
@@ -120,7 +120,7 @@ Checkbutton(window, text="Generate inputs .txt file only (no video)", onvalue=1,
 
 vPosSlider = Scale(window, from_=1, to=0, resolution = 0.05, label="Visualizer center position")
 vPosSlider.set(0.75)
-vPosSlider.grid(column=1, row=9,sticky=N+S, rowspan=4)
+vPosSlider.grid(column=1, row=9,sticky=N+S, rowspan=4, padx=(10,0))
 
 hPosSlider = Scale(window, from_=0, to=1, resolution = 0.05, orient=HORIZONTAL, length = 200)
 hPosSlider.set(0.5)
