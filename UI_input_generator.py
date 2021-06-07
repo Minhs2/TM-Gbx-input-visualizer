@@ -26,10 +26,10 @@ def run():
         resDpi = int(dpi_dict[resolutionVar.get()])
 
         if digitalBool.get() == 0:
-            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi)
+            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), 0.5, 0.75)
 
         else:
-            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi)
+            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), 0.5, 0.75)
 
 
         if videoMergeBool.get() == 0:
@@ -132,10 +132,20 @@ colorDisplayCanv = Canvas(window, width = 26, height = 26)
 colorDisplayCanv.grid(column=1, row=10, pady=5,sticky=W)
 colorDisplay = colorDisplayCanv.create_rectangle(0, 0, 26, 26, fill=color_hex)
 
+visScaleLabelVar = StringVar()
+visScaleLabelVar.set("Visualizer size scale:")
+visScaleLabel = Label(window, textvariable=visScaleLabelVar)
+visScaleLabel.grid(column=0, row=11,padx = 7, pady= 5, sticky=W)
+
+visScaleVar = StringVar()
+visScaleVar.set("1.00")
+visScaleEntry = Entry(window, textvariable = visScaleVar)
+visScaleEntry.grid(column=0, row=11,padx = 120, pady= 5, sticky=W)
+
 vidResolutionVar = StringVar()
 vidResolutionVar.set("Video resolution:")
 vidResolutionLabel = Label(window, textvariable=vidResolutionVar)
-vidResolutionLabel.grid(column=0, row=11,padx = 7, pady= (5,0), sticky=W)
+vidResolutionLabel.grid(column=0, row=12,padx = 7, pady= 5, sticky=W)
 
 resolutions = [
 "360p",
@@ -161,7 +171,7 @@ resolutionVar = StringVar(window)
 resolutionVar.set(resolutions[3])
 
 resolutionSelector = OptionMenu(window, resolutionVar, *resolutions)
-resolutionSelector.grid(column=0, row=12, sticky=W, padx = 10, pady =(0,5) )
+resolutionSelector.grid(column=0, row=12, sticky=W, padx = 105, pady =5 )
 
 executeBtn = Button(window, text="Process replay (may take a while for video(s))", bg="white", fg="black", command=run, activebackground='#00ff00')
 executeBtn.grid(column=0, row=13, sticky=E+W, padx = 10, pady =5 )

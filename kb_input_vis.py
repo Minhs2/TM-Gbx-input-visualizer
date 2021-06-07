@@ -4,7 +4,7 @@ import matplotlib.patches as patches
 import matplotlib.animation as animation
 import numpy as np
 
-def digitalVideo(inputTxt, color_hex, resDpi):
+def digitalVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
 
     global accel
     global brake
@@ -68,10 +68,14 @@ def digitalVideo(inputTxt, color_hex, resDpi):
     vidCanvas.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
 
     # Transparent gray background squares
-    accelBG = patches.Rectangle((899, 810), 123, 123, facecolor='#e2e2e2', alpha = 0.588)
-    brakeBG = patches.Rectangle((899, 676), 123, 123, facecolor='#e2e2e2', alpha = 0.588)
-    leftBG = patches.Rectangle((765, 676), 123, 123, facecolor='#e2e2e2', alpha = 0.588)
-    rightBG = patches.Rectangle((1034, 676), 123, 123, facecolor='#e2e2e2', alpha = 0.588)
+    # Specifications (scaleFactor = 1): 422 wide, 278 tall, 10 space in between shapes
+    CENTER_H = 1920 * hPos
+    CENTER_V = 1080 * vPos
+
+    accelBG = patches.Rectangle((CENTER_H - (67 * scaleFactor), CENTER_V + (5 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#e2e2e2', alpha = 0.588)
+    brakeBG = patches.Rectangle((CENTER_H - (67 * scaleFactor), CENTER_V - (139 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#e2e2e2', alpha = 0.588)
+    leftBG = patches.Rectangle((CENTER_H - (211 * scaleFactor), CENTER_V - (139 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#e2e2e2', alpha = 0.588)
+    rightBG = patches.Rectangle((CENTER_H + (77 * scaleFactor), CENTER_V - (139 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#e2e2e2', alpha = 0.588)
 
     ax.add_patch(accelBG)
     ax.add_patch(brakeBG)
@@ -79,10 +83,10 @@ def digitalVideo(inputTxt, color_hex, resDpi):
     ax.add_patch(rightBG)
 
     # Active squares
-    accel = patches.Rectangle((899, 810), 123, 123, facecolor='#00ff00')
-    brake = patches.Rectangle((899, 676), 123, 123, facecolor='#ff0000')
-    left = patches.Rectangle((765, 676), 123, 123, facecolor='#ffac30')
-    right = patches.Rectangle((1034, 676), 123, 123, facecolor='#ffac30')
+    accel = patches.Rectangle((CENTER_H - (67 * scaleFactor), CENTER_V + (5 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#00ff00')
+    brake = patches.Rectangle((CENTER_H - (67 * scaleFactor), CENTER_V - (139 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#ff0000')
+    left = patches.Rectangle((CENTER_H - (211 * scaleFactor), CENTER_V - (139 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#ffac30')
+    right = patches.Rectangle((CENTER_H + (77 * scaleFactor), CENTER_V - (139 * scaleFactor)), 134 * scaleFactor, 134 * scaleFactor, facecolor='#ffac30')
 
     ax.add_patch(accel)
     ax.add_patch(brake)
