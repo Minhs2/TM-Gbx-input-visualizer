@@ -5,7 +5,7 @@ Input extraction done via [gbxtools](https://github.com/donadigo/gbxtools) and [
 
 ## Preview
 ### User interface (v0.4)
-![image](https://user-images.githubusercontent.com/32379779/120962571-d878c980-c714-11eb-90f9-d671d67796e2.png)
+![image](https://user-images.githubusercontent.com/32379779/120962637-f6dec500-c714-11eb-8c91-cb1f02234b5b.png)
 
 
 ### Example output (v0.3.2) - YouTube Video
