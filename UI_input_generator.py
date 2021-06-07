@@ -26,10 +26,10 @@ def run():
         resDpi = int(dpi_dict[resolutionVar.get()])
 
         if digitalBool.get() == 0:
-            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), 0.5, 0.75)
+            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
 
         else:
-            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), 0.5, 0.75)
+            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
 
 
         if videoMergeBool.get() == 0:
@@ -70,7 +70,7 @@ window = Tk()
 window.protocol("WM_DELETE_WINDOW", processEnder)
 
 window.title("TrackMania Replay Input Viewer")
-window.geometry('700x450')
+window.geometry('800x450')
 
 gbxFileName = "No .Gbx file specified"
 
@@ -117,6 +117,16 @@ Radiobutton(window, text="Keyboard", variable = digitalBool, value = 1).grid(col
 
 txtOnlyBool = IntVar()
 Checkbutton(window, text="Generate inputs .txt file only (no video)", onvalue=1, offvalue=0, variable = txtOnlyBool).grid(column=0, row=7,pady= (10,0),sticky=W)
+
+vPosSlider = Scale(window, from_=1, to=0, resolution = 0.05, label="Visualizer center position")
+vPosSlider.set(0.75)
+vPosSlider.grid(column=1, row=9,sticky=N+S, rowspan=4)
+
+hPosSlider = Scale(window, from_=0, to=1, resolution = 0.05, orient=HORIZONTAL, length = 200)
+hPosSlider.set(0.5)
+hPosSlider.grid(column=1, row=12,padx = (75,0), columnspan = 2, sticky=W+E)
+
+
 
 videoMergeBool = IntVar()
 Checkbutton(window, text="Merge input visualization onto video file (background must be black)", onvalue=0, offvalue=1, variable = videoMergeBool).grid(column=0, row=8,sticky=W)
