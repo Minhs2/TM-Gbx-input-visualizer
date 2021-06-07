@@ -42,7 +42,7 @@ TrackMania Turbo
 
 ### Known bugs
 
-- None for now
+- Analog accelerate and breaking is not supported (Issue with input extraction)
 
 ### Other
 
