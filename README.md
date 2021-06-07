@@ -48,8 +48,6 @@ TrackMania Turbo
 
 - Add a progress bar or other progress indicator
 
-- Overlay input viewer video with onto a rendered replay video automatically
-
 - Bulk processing of multiple files
 
 - Change export location
@@ -63,4 +61,3 @@ TrackMania Turbo
 - Change program's icon while running
 
 - Facelift the user interface
-
