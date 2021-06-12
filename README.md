@@ -2,7 +2,7 @@
 
 Input extraction done via [gbxtools](https://github.com/donadigo/gbxtools) and [pygbx](https://github.com/donadigo/pygbx) by [donadigo](https://github.com/donadigo)
 
-## Tutorial video
+## Tutorial - YouTube Video
 [![Video preview](http://img.youtube.com/vi/uOigkT1MOnw/0.jpg)](http://www.youtube.com/watch?v=uOigkT1MOnw "TrackMania Replay Input Visualizer Tutorial")
 
 ## Preview
@@ -10,8 +10,8 @@ Input extraction done via [gbxtools](https://github.com/donadigo/gbxtools) and [
 ![image](https://user-images.githubusercontent.com/32379779/120962637-f6dec500-c714-11eb-8c91-cb1f02234b5b.png)
 
 
-### Example output (v0.3.2) - YouTube Video
-[![Video preview](http://img.youtube.com/vi/o6gHC0RtKFc/0.jpg)](http://www.youtube.com/watch?v=o6gHC0RtKFc "(Replay Inputs) TrackMania Turbo #056 riolu 00'30''34 Replay")
+### Example output (v0.4) - YouTube Video
+[![Video preview](http://img.youtube.com/vi/CbrKMrudyBc/0.jpg)](http://www.youtube.com/watch?v=CbrKMrudyBc "Trackmania A01-Race 23.85 by Rollin")
 
 ## Usage
 
