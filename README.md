@@ -2,6 +2,8 @@
 
 Input extraction done via [gbxtools](https://github.com/donadigo/gbxtools) and [pygbx](https://github.com/donadigo/pygbx) by [donadigo](https://github.com/donadigo)
 
+## Tutorial video
+[![Video preview](http://img.youtube.com/vi/uOigkT1MOnw/0.jpg)](http://www.youtube.com/watch?v=uOigkT1MOnw "TrackMania Replay Input Visualizer Tutorial")
 
 ## Preview
 ### User interface (v0.4)
