@@ -67,6 +67,14 @@ def get_inputs(ghost, write_func=None):
             invert_axis = True
             break
 
+    # Keep track of previous events to prioritize digital events
+    last_event_time = 0
+    last_event_digital = {
+        "accel" : False,
+        "brake" : False,
+        "steer" : False
+    }
+
     # Get events from replay file
     for event in ghost.control_entries:
         time = get_event_time(event)
@@ -82,31 +90,43 @@ def get_inputs(ghost, write_func=None):
             if value != 0:
                 value = 1
             inputs["accel"] = np.append(inputs["accel"], [[time, value]], axis=0)
+            last_event_digital["accel"] = True
         elif name == "AccelerateReal":
+            if time == last_event_time and last_event_digital["accel"]:
+                continue
             if value > 0:
                 value = 1
             else:
                 value = 0
             inputs["accel"] = np.append(inputs["accel"], [[time, value]], axis=0)
+            last_event_digital["accel"] = False
         elif name == "Brake":
             if value != 0:
                 value = 1
             inputs["brake"] = np.append(inputs["brake"], [[time, value]], axis=0)
+            last_event_digital["brake"] = True
         elif name == "BrakeReal":
+            if time == last_event_time and last_event_digital["brake"]:
+                continue
             if value > 0:
                 value = 1
             else:
                 value = 0
             inputs["brake"] = np.append(inputs["brake"], [[time, value]], axis=0)
+            last_event_digital["brake"] = False
         elif name == "SteerLeft":
             if value != 0:
                 value = 65536
             inputs["steerL"] = np.append(inputs["steerL"], [[time, value]], axis=0)
+            last_event_digital["steer"] = True
         elif name == "SteerRight":
             if value != 0:
                 value = 65536
             inputs["steerR"] = np.append(inputs["steerR"], [[time, value]], axis=0)
+            last_event_digital["steer"] = True
         elif name == "Steer":
+            if time == last_event_time and last_event_digital["steer"]:
+                continue
             if value > 0:
                 inputs["steerR"] = np.append(inputs["steerR"], [[time, value]], axis=0)
                 inputs["steerL"] = np.append(inputs["steerL"], [[time, 0]], axis=0)
@@ -116,6 +136,9 @@ def get_inputs(ghost, write_func=None):
             else:
                 inputs["steerR"] = np.append(inputs["steerR"], [[time, 0]], axis=0)
                 inputs["steerL"] = np.append(inputs["steerL"], [[time, 0]], axis=0)
+            last_event_digital["steer"] = False
+
+        last_event_time = time
 
     # Extend last input to end of replay
     inputs["accel"] = np.append(inputs["accel"][:,:], [[inputs["racetime"], inputs["accel"][-1,1]]], axis=0)
