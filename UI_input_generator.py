@@ -7,36 +7,36 @@ import threading
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog as fd
-from generate_input_file import generateTxt
 from analog_input_vis import analogVideo
 from kb_input_vis import digitalVideo
 from video_merger import inputReplayMerge
+
+from inputs import get_inputs_gbx
 
 
 def run():
 
     global color_hex
-    # Run generate_input_file pipe into directory path,
     baseFileName = os.path.splitext(os.path.basename(gbxFileName))[0]
-    #os.makedirs("Raw Inputs", exist_ok=True)
 
-    #sys.stdout = open(os.path.join('Raw Inputs', baseFileName + '.txt'), "w")
-    #generateTxt(gbxFileName)
-    #sys.stdout.close()
+    resDpi = int(dpi_dict[resolutionVar.get()])
 
-    if txtOnlyBool.get() == 0:
+    if digitalBool.get() == 0:
+        analogVideo(gbxFileName, color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
+    else:
+        digitalVideo(gbxFileName, color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
 
-        resDpi = int(dpi_dict[resolutionVar.get()])
-
-        if digitalBool.get() == 0:
-            analogVideo(gbxFileName, color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
-
-        else:
-            digitalVideo(gbxFileName, color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
+    if videoMergeBool.get() == 0:
+        inputReplayMerge(os.path.join('Inputs Video', baseFileName + '.mp4'), replayFileName, audioBool.get(), starTrimVar.get())
 
 
-        if videoMergeBool.get() == 0:
-            inputReplayMerge(os.path.join('Inputs Video', baseFileName + '.mp4'), replayFileName, audioBool.get(), starTrimVar.get())
+def saveRawInputs():
+    baseFileName = os.path.splitext(os.path.basename(gbxFileName))[0]
+    os.makedirs('Raw Inputs', exist_ok=True)
+
+    f = open('Raw Inputs/' + baseFileName + '.txt', 'w')
+    get_inputs_gbx(gbxFileName, f.write)
+    f.close()
 
 
 def gbxAsk():
@@ -73,7 +73,7 @@ window = Tk()
 window.protocol("WM_DELETE_WINDOW", processEnder)
 
 window.title("TrackMania Replay Input Viewer")
-window.geometry('700x450')
+window.geometry('700x430')
 
 gbxFileName = "No .Gbx file specified"
 
@@ -118,8 +118,8 @@ digitalBool = IntVar()
 Radiobutton(window, text="Controller, Wheel, or Joystick", variable = digitalBool,value = 0 ).grid(column=0, row=5,sticky=W)
 Radiobutton(window, text="Keyboard", variable = digitalBool, value = 1).grid(column=0, row=6,sticky=W)
 
-txtOnlyBool = IntVar()
-Checkbutton(window, text="Generate inputs .txt file only (no video)", onvalue=1, offvalue=0, variable = txtOnlyBool).grid(column=0, row=7,pady= (10,0),sticky=W)
+#txtOnlyBool = IntVar()
+#Checkbutton(window, text="Generate inputs .txt file only (no video)", onvalue=1, offvalue=0, variable = txtOnlyBool).grid(column=0, row=7,pady= (10,0),sticky=W)
 
 vPosSlider = Scale(window, from_=1, to=0, resolution = 0.05, label="Visualizer center position")
 vPosSlider.set(0.75)
@@ -188,6 +188,12 @@ resolutionSelector.grid(column=0, row=12, sticky=W, padx = 105, pady =5 )
 
 executeBtn = Button(window, text="Process replay (may take a while for video(s))", bg="white", fg="black", command=run, activebackground='#00ff00')
 executeBtn.grid(column=0, row=13, sticky=E+W, padx = 10, pady =5 )
+
+saveRawInputsBtn = Button(window, text="Save raw inputs", bg="white", fg="black", command=saveRawInputs, activebackground='#00ff00')
+saveRawInputsBtn.grid(column=1, row=13, sticky=E+W, padx = 10, pady =5 )
+
+#genInputGraphBtn = Button(window, text="Generate input graph", bg="white", fg="black", command=run, activebackground='#00ff00')
+#genInputGraphBtn.grid(column=0, row=13, sticky=E+W, padx = 10, pady =5 )
 
 
 # WiP progressBar code that doesn't work because GUI is unthreaded
