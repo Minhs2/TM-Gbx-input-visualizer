@@ -61,8 +61,9 @@ def get_inputs(ghost, write_func=None):
         "cp_times" : ghost.cp_times
     }
 
-    write_func(f"#Race time: {inputs['racetime']}\n")
-    write_func(f"#CP times: {inputs['cp_times']}\n")
+    if write_func:
+        write_func(f"#Race time: {inputs['racetime']}\n")
+        write_func(f"#CP times: {inputs['cp_times']}\n")
 
     invert_axis = False
     for event in ghost.control_entries:
