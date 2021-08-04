@@ -12,6 +12,7 @@ from kb_input_vis import digitalVideo
 from video_merger import inputReplayMerge
 
 from inputs import get_inputs_gbx
+from visualize import plot_replays
 
 
 def run():
@@ -37,6 +38,10 @@ def saveRawInputs():
     f = open('Raw Inputs/' + baseFileName + '.txt', 'w')
     get_inputs_gbx(gbxFileName, f.write)
     f.close()
+
+
+def genInputGraph():
+    plot_replays([gbxFileName])
 
 
 def gbxAsk():
@@ -186,14 +191,14 @@ resolutionVar.set(resolutions[3])
 resolutionSelector = OptionMenu(window, resolutionVar, *resolutions)
 resolutionSelector.grid(column=0, row=12, sticky=W, padx = 105, pady =5 )
 
-executeBtn = Button(window, text="Process replay (may take a while for video(s))", bg="white", fg="black", command=run, activebackground='#00ff00')
-executeBtn.grid(column=0, row=13, sticky=E+W, padx = 10, pady =5 )
+executeBtn = Button(window, text="Generate inputs video", bg="white", fg="black", command=run, activebackground='#00ff00')
+executeBtn.grid(column=0, row=13, sticky=W, padx = 10, pady =5 )
 
 saveRawInputsBtn = Button(window, text="Save raw inputs", bg="white", fg="black", command=saveRawInputs, activebackground='#00ff00')
-saveRawInputsBtn.grid(column=1, row=13, sticky=E+W, padx = 10, pady =5 )
+saveRawInputsBtn.grid(column=0, row=13, padx = 20, pady =5 )
 
-#genInputGraphBtn = Button(window, text="Generate input graph", bg="white", fg="black", command=run, activebackground='#00ff00')
-#genInputGraphBtn.grid(column=0, row=13, sticky=E+W, padx = 10, pady =5 )
+genInputGraphBtn = Button(window, text="Show inputs graph", bg="white", fg="black", command=genInputGraph, activebackground='#00ff00')
+genInputGraphBtn.grid(column=0, row=13, sticky=E, padx = 10, pady =5 )
 
 
 # WiP progressBar code that doesn't work because GUI is unthreaded
