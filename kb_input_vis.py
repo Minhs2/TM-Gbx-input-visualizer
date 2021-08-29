@@ -4,54 +4,19 @@ import matplotlib.patches as patches
 import matplotlib.animation as animation
 import numpy as np
 
-def digitalVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
+from inputs import get_inputs_gbx
+
+
+def digitalVideo(gbxFileName, color_hex, resDpi, scaleFactor, hPos, vPos):
 
     global accel
     global brake
     global left
     global right
 
-    # Parse txt files into 4 arrays
-    accelDat = []
-    brakeDat = []
-    leftDat = []
-    rightDat = []
-    maxVal = 0
-
-    # Parse txt files into 4 arrays
-    file = open(inputTxt, 'r')
-    rawData = file.readlines()
-
-    # Divide each raw data time by 10 for drop extra 0
-    # Save to 2d array of value pairs
-
-    for line in rawData:
-        last5 = line[-6:]
-        dashSplit = line.split('-')
-
-        if(len(dashSplit) == 1):
-            dashSplit = line.split()
-            spaceSplit = [7200000]
-            
-        else:
-             spaceSplit = dashSplit[1].split()
-
-        if int(spaceSplit[0])/10 > maxVal and spaceSplit[0] != 7200000:
-            maxVal = int(spaceSplit[0])/10
-
-        if  last5 == "ss up\n":
-            accelDat.append([int(dashSplit[0])/10, int(spaceSplit[0])/10])
-
-        elif last5 == " down\n":    
-            brakeDat.append([int(dashSplit[0])/10, int(spaceSplit[0])/10])
-        
-        elif last5 == " left\n":    
-            leftDat.append([int(dashSplit[0])/10, int(spaceSplit[0])/10])
-
-        elif last5 == "right\n":
-            rightDat.append([int(dashSplit[0])/10, int(spaceSplit[0])/10])
-
-    file.close()
+    # Get inputs from replay
+    inputs = get_inputs_gbx(gbxFileName)
+    maxVal = int(inputs['racetime']/10)
 
     # Define Matplotlib figure and axes
     vidCanvas, ax = plt.subplots()
@@ -107,7 +72,7 @@ def digitalVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
         global brake
         global left
         global right
-        
+
         accel.set_visible(False)
         brake.set_visible(False)
         left.set_visible(False)
@@ -116,29 +81,30 @@ def digitalVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
         # Print progress
         # print(((i+1)/maxVal)*100)
 
-        for pair in accelDat:
-            if pair[0] <= i <= pair[1]:
-                accel.set_visible(True)
+        if inputs['ms_accel'][i] > 0:
+            accel.set_visible(True)
 
-        for pair in brakeDat:
-            if pair[0] <= i <= pair[1]:
-                brake.set_visible(True)
+        if inputs['ms_brake'][i] > 0:
+            brake.set_visible(True)
 
-        for pair in leftDat:
-            if pair[0] <= i <= pair[1]:
-                left.set_visible(True)
+        if inputs['ms_steerL'][i] > 0:
+            left.set_visible(True)
 
-        for pair in rightDat:
-            if pair[0] <= i <= pair[1]:
-                right.set_visible(True)
+        if inputs['ms_steerR'][i] > 0:
+            right.set_visible(True)
 
         return ax.patches
 
     # Export file to video, set dpi to 600
-    plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg/ffmpeg.exe'
+    if os.name == 'nt': # windows
+        plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg/ffmpeg.exe'
+    elif os.name == 'posix': # linux/mac, assuming ffmpeg is installed and in path
+        plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg'
+    # else throw error
+
     anim = animation.FuncAnimation(vidCanvas, animate, blit=True, interval=10, save_count=maxVal)
     plt.axis('off')
     os.makedirs("Inputs Video/", exist_ok=True)
 
     vidWriter = animation.FFMpegWriter(fps=100, bitrate = 100000)
-    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = resDpi)
+    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(gbxFileName))[0] + ".mp4"), writer = vidWriter, dpi = resDpi)

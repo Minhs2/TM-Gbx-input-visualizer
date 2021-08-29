@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 from tkinter import colorchooser
 import sys
@@ -10,26 +12,27 @@ from analog_input_vis import analogVideo
 from kb_input_vis import digitalVideo
 from video_merger import inputReplayMerge
 
-def run():
-    
-    global color_hex
-    # Run generate_input_file pipe into directory path, 
-    baseFileName = os.path.splitext(os.path.basename(gbxFileName))[0]
-    os.makedirs("Raw Inputs", exist_ok=True)
 
-    sys.stdout = open(os.path.join('Raw Inputs', baseFileName + '.txt'), "w")
-    generateTxt(gbxFileName)
-    sys.stdout.close()
+def run():
+
+    global color_hex
+    # Run generate_input_file pipe into directory path,
+    baseFileName = os.path.splitext(os.path.basename(gbxFileName))[0]
+    #os.makedirs("Raw Inputs", exist_ok=True)
+
+    #sys.stdout = open(os.path.join('Raw Inputs', baseFileName + '.txt'), "w")
+    #generateTxt(gbxFileName)
+    #sys.stdout.close()
 
     if txtOnlyBool.get() == 0:
 
         resDpi = int(dpi_dict[resolutionVar.get()])
 
         if digitalBool.get() == 0:
-            analogVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
+            analogVideo(gbxFileName, color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
 
         else:
-            digitalVideo(os.path.join('Raw Inputs', baseFileName + '.txt'), color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
+            digitalVideo(gbxFileName, color_hex, resDpi, float(visScaleVar.get()), hPosSlider.get(), vPosSlider.get())
 
 
         if videoMergeBool.get() == 0:
@@ -50,14 +53,14 @@ def replayAsk():
     replayVar.set(os.path.basename(replayFileName))
 
 def bg_color():
-    global color_hex   
+    global color_hex
 
     # Store selected color
     color_hex = colorchooser.askcolor(title ="Choose background color")[1]
 
     if color_hex == None:
         color_hex = '#000000'
-    
+
     colorDisplayCanv.itemconfig(colorDisplay, fill=color_hex)
 
 def processEnder():
@@ -197,4 +200,3 @@ progressBar["value"] = 0'''
 if __name__ == '__main__':
 
     threading.Thread(window.mainloop())
-    

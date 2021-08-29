@@ -4,63 +4,19 @@ import matplotlib.patches as patches
 import matplotlib.animation as animation
 import sys
 
-def analogVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
+import numpy as np
+from inputs import get_inputs_gbx
+
+
+def analogVideo(gbxFileName, color_hex, resDpi, scaleFactor, hPos, vPos):
     global accel
     global brake
-    global steer
-    global targetSteer
+    global steerR
+    global steerL
 
-    # Parse txt files into 4 arrays
-    accelDat = []
-    brakeDat = []
-    steerDat = []
-    maxVal = 0
-
-    # Parse txt files into 3 arrays
-    file = open(inputTxt, 'r')
-    rawData = file.readlines()
-
-    # Divide each raw data time by 10 for drop extra 0
-    # Save to 2d array of value pairs
-
-    for line in rawData:
-
-        analogSplit = line.split(' steer ')
-
-        # Analog input processor
-        if len(analogSplit) == 2:
-            if int(analogSplit[0])/10 > maxVal:
-                maxVal = int(analogSplit[0])/10
-
-            # [:-1] strips newline from analogSplit
-            steerDat.append([int(analogSplit[0])/10, int(analogSplit[1][:-1])])   
-
-        # Digital input processor
-        else:
-            last5 = line[-6:]
-            dashSplit = line.split('-')
-
-            if(len(dashSplit) == 1):
-                dashSplit = line.split()
-                spaceSplit = [7200000]
-            
-            else:
-                spaceSplit = dashSplit[1].split()
-
-            if int(spaceSplit[0])/10 > maxVal and spaceSplit[0] != 7200000:
-                maxVal = int(spaceSplit[0])/10
-
-            if  last5 == "ss up\n":
-                accelDat.append([int(dashSplit[0])/10, int(spaceSplit[0])/10])
-
-            elif last5 == " down\n":    
-                brakeDat.append([int(dashSplit[0])/10, int(spaceSplit[0])/10])
-
-
-    file.close()
-
-    # Append empty array to not run into inded OOB error
-    steerDat.append([float('inf'),0])
+    # Get inputs from replay
+    inputs = get_inputs_gbx(gbxFileName)
+    maxVal = int(inputs['racetime']/10)
 
     # Define Matplotlib figure and axes
     vidCanvas, ax = plt.subplots()
@@ -75,7 +31,7 @@ def analogVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
 
     # Make flush with borders
     vidCanvas.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
-    
+
     # Transparent gray background shapes
     # Specifications (scaleFactor = 1): 560 wide, 280 tall, 10 space in between shapes
 
@@ -84,12 +40,12 @@ def analogVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
 
     accelBG = patches.Rectangle((CENTER_H - (64 * scaleFactor), CENTER_V + (5 * scaleFactor)), (128 * scaleFactor), (135 * scaleFactor), facecolor='#e2e2e2', alpha = 0.588)
     brakeBG = patches.Rectangle((CENTER_H - (64 * scaleFactor), CENTER_V - (140 * scaleFactor)), (128 * scaleFactor), (135 * scaleFactor), facecolor='#e2e2e2', alpha = 0.588)
-    leftBG = patches.Polygon([[CENTER_H - (74 * scaleFactor), CENTER_V + (140 * scaleFactor)], 
-                            [CENTER_H - (74 * scaleFactor), CENTER_V - (140 * scaleFactor)], 
+    leftBG = patches.Polygon([[CENTER_H - (74 * scaleFactor), CENTER_V + (140 * scaleFactor)],
+                            [CENTER_H - (74 * scaleFactor), CENTER_V - (140 * scaleFactor)],
                             [CENTER_H - (280 * scaleFactor), CENTER_V]],
                             closed=True, facecolor='#e2e2e2', alpha = 0.588)
-    rightBG = patches.Polygon([[CENTER_H + (74 * scaleFactor), CENTER_V + (140 * scaleFactor)], 
-                            [CENTER_H + (74 * scaleFactor), CENTER_V - (140 * scaleFactor)], 
+    rightBG = patches.Polygon([[CENTER_H + (74 * scaleFactor), CENTER_V + (140 * scaleFactor)],
+                            [CENTER_H + (74 * scaleFactor), CENTER_V - (140 * scaleFactor)],
                             [CENTER_H + (280 * scaleFactor), CENTER_V]],
                             closed=True, facecolor='#e2e2e2', alpha = 0.588)
     ax.add_patch(accelBG)
@@ -120,25 +76,21 @@ def analogVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
             xValue = CENTER_H + (74 * scaleFactor) + (206 * scaleFactor * (steerVal / MAX_STEER_VAL))
             yTop = CENTER_V + (140 * scaleFactor) - (140 * scaleFactor * (steerVal / MAX_STEER_VAL))
             yBottom = CENTER_V - (140 * scaleFactor) + (140 * scaleFactor * (steerVal / MAX_STEER_VAL))
-            return[[CENTER_H + (74 * scaleFactor), CENTER_V + (140 * scaleFactor)], 
-                   [CENTER_H + (74 * scaleFactor), CENTER_V - (140 * scaleFactor)],  
+            return[[CENTER_H + (74 * scaleFactor), CENTER_V + (140 * scaleFactor)],
+                   [CENTER_H + (74 * scaleFactor), CENTER_V - (140 * scaleFactor)],
                    [xValue, yBottom], [xValue, yTop]]
         else:
             xValue = CENTER_H - (74 * scaleFactor) - (206 * scaleFactor * (steerVal / MIN_STEER_VAL))
             yTop = CENTER_V + (140 * scaleFactor) - (140 * scaleFactor * (steerVal / MIN_STEER_VAL))
             yBottom = CENTER_V - (140 * scaleFactor) + (140 * scaleFactor * (steerVal / MIN_STEER_VAL))
-            return[[CENTER_H - (74 * scaleFactor), CENTER_V + (140 * scaleFactor)], 
-                   [CENTER_H - (74 * scaleFactor), CENTER_V - (140 * scaleFactor)],  
+            return[[CENTER_H - (74 * scaleFactor), CENTER_V + (140 * scaleFactor)],
+                   [CENTER_H - (74 * scaleFactor), CENTER_V - (140 * scaleFactor)],
                    [xValue, yBottom], [xValue, yTop]]
-            
-    targetSteer = 0
-    
-    # Check if the player starts by steering 
-    if steerDat[targetSteer][0] == 0:
-        steer = patches.Polygon(calcPartTriangle(steerDat[targetSteer][1]), closed=True, facecolor='#ffac30')
-    else:
-        steer = patches.Polygon([[0,0]], closed=True, facecolor='#ffac30')
-    ax.add_patch(steer)
+
+    steerR = patches.Polygon(calcPartTriangle(inputs["ms_steerR"][0]), closed=True, facecolor='#ffac30')
+    steerL = patches.Polygon(calcPartTriangle(inputs["ms_steerL"][0]), closed=True, facecolor='#ffac30')
+    ax.add_patch(steerR)
+    ax.add_patch(steerL)
 
     def animate(i):
         '''global progressBar
@@ -147,36 +99,37 @@ def analogVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
 
         global accel
         global brake
-        global steer
-        global targetSteer
-        
-        
+        global steerR
+        global steerL
+
+
         accel.set_visible(False)
         brake.set_visible(False)
 
         # Update progress
         # progressBar["value"] = ((i+1)/maxVal)*100
 
+        steerR.remove()
+        steerL.remove()
+        steerR = patches.Polygon(calcPartTriangle(inputs['ms_steerR'][i]), closed=True, facecolor='#ffac30')
+        steerL = patches.Polygon(calcPartTriangle(-inputs['ms_steerL'][i]), closed=True, facecolor='#ffac30')
+        ax.add_patch(steerR)
+        ax.add_patch(steerL)
 
-        if steerDat[targetSteer + 1][0] <= i:
+        if inputs['ms_accel'][i] > 0:
+            accel.set_visible(True)
 
-            targetSteer = targetSteer + 1
-            steer.remove()
-            steer = patches.Polygon(calcPartTriangle(steerDat[targetSteer][1]), closed=True, facecolor='#ffac30')
-            ax.add_patch(steer)
-        
-        for pair in accelDat:
-            if pair[0] <= i <= pair[1]:
-                accel.set_visible(True)
-
-        for pair in brakeDat:
-            if pair[0] <= i <= pair[1]:
-                brake.set_visible(True)
+        if inputs['ms_brake'][i] > 0:
+            brake.set_visible(True)
 
         return ax.patches
 
     # Export file to video, set dpi to 600 for 1080p
-    plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg/ffmpeg.exe'
+    if os.name == 'nt': # windows
+        plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg/ffmpeg.exe'
+    elif os.name == 'posix': # linux/mac, assuming ffmpeg is installed and in path
+        plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg'
+    # else throw error
 
     anim = animation.FuncAnimation(vidCanvas, animate, blit=True, interval=10, save_count=maxVal)
     plt.axis('off')
@@ -184,4 +137,4 @@ def analogVideo(inputTxt, color_hex, resDpi, scaleFactor, hPos, vPos):
 
     vidWriter = animation.FFMpegWriter(fps=100, bitrate = 100000)
 
-    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(inputTxt))[0] + ".mp4"), writer = vidWriter, dpi = resDpi)
+    anim.save(os.path.join('Inputs Video', os.path.splitext(os.path.basename(gbxFileName))[0] + ".mp4"), writer = vidWriter, dpi = resDpi)
