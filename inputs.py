@@ -59,6 +59,10 @@ def get_inputs(ghost, write_func=None):
         "cp_times" : ghost.cp_times
     }
 
+    if write_func:
+        write_func(f"#Race time: {inputs['racetime']}\n")
+        write_func(f"#CP times: {inputs['cp_times']}\n")
+
     invert_axis = False
     for event in ghost.control_entries:
         if event.event_name == "_FakeDontInverseAxis":
@@ -212,13 +216,6 @@ def get_inputs_gbx(path, write_func=None):
     return get_inputs(ghost, write_func)
 
 
-
-def process_path(path):
-    inputs = get_inputs_gbx(path, sys.stdout.write)
-    print(f"Race time: {inputs['racetime']}")
-    print(f"CP times: {inputs['cp_times']}")
-
-
 def main():
     # Read options & arguments
     try:
@@ -231,7 +228,7 @@ def main():
 
     for filename in args:
         if filename.lower().endswith(".replay.gbx"):
-            process_path(filename)
+            get_inputs_gbx(filename, sys.stdout.write)
 
 if __name__ == "__main__":
     main()
