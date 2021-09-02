@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import sys, os, getopt
 
 import numpy as np
