@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from pygbx import Gbx, GbxType
 from pygbx.headers import ControlEntry, CGameCtnGhost
 import numpy as np
